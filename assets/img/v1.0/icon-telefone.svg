@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="9.0311108mm"
+   height="9.0311022mm"
+   viewBox="0 0 31.999999 31.999968"
+   id="svg9543"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="icon-telefone.svg">
+  <defs
+     id="defs9545" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="829.57143"
+     inkscape:cy="-538.28573"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="2560"
+     inkscape:window-height="1057"
+     inkscape:window-x="1072"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata9548">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(981.71429,37.923494)">
+    <path
+       style="clip-rule:evenodd;fill:#fefefe;fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+       d="m -965.71429,-37.923494 c -8.8381,0 -16,7.161856 -16,15.999985 0,8.836278 7.1619,15.9999839 16,15.9999839 8.83815,0 16,-7.1637059 16,-15.9999839 0,-8.838129 -7.16185,-15.999985 -16,-15.999985 z m -4.56414,9.209948 c 0.40217,0.01479 0.5268,-0.01909 0.72494,0.255264 0.24471,0.335505 0.95653,2.199824 1.20485,2.746643 0.3947,0.861937 0.089,1.119454 -0.3982,1.725593 -0.0946,0.114908 -0.0966,0.119968 -0.22464,0.255264 -0.57281,0.593164 -0.47955,0.785103 0.34718,1.878747 0.60057,0.793353 1.15033,1.372857 1.9196,1.980852 0.53753,0.422628 1.90387,1.238528 2.55264,1.409059 0.3819,0.101943 0.53701,-0.05971 0.71475,-0.265473 0.28361,-0.322536 1.16141,-1.494555 1.35798,-1.552009 0.4245,-0.124192 2.89234,1.146863 3.46139,1.460114 0.27707,0.150143 0.30159,0.261459 0.28591,0.663687 -0.0482,1.20301 -0.47124,1.840678 -1.44994,2.45054 -1.65528,1.03447 -3.05064,0.529197 -4.59473,-0.01021 -2.26887,-0.793358 -3.49417,-1.632987 -4.88069,-2.991703 -1.11959,-1.09735 -2.69562,-3.003303 -3.35924,-4.523286 -0.40933,-0.943501 -0.67909,-2.107924 -0.32674,-3.257177 0.15762,-0.511604 0.38477,-0.953831 0.67387,-1.317164 0.1239,-0.153855 0.34655,-0.412297 0.45947,-0.510528 0.24885,-0.219704 0.25889,-0.240752 0.61265,-0.357374 0.3292,-0.102815 0.55964,-0.05531 0.91895,-0.04084 z"
+       id="path8384"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

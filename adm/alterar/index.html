@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" href="../ico.png" type="image/png">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex,nofollow,noarchive" />
+	<title>Alteração</title>
+	<link rel="stylesheet" href="../lib/bootstrap-5.1.3-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../lib/fonts/2/css.css">
+	<link rel="stylesheet" href="../lib/css/css.css">
+</head>
+
+<body>
+	<div id="app">
+
+		<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+			<div class="container-fluid">
+				<a title="Entrar / Sair" class="nav-link active" aria-current="page" href="../login/">
+					{{
+					email_usuario ? '👤 '+email_usuario : '🔐 Login'
+					}}
+				</a>
+
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+					aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarScroll">
+					<ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
+
+						<li class="nav-item dropdown">
+							<a class="nav-link" aria-current="page" href="../../" target="_blank">🖥️ Site</a>
+						</li>
+
+
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+								data-bs-toggle="dropdown" aria-expanded="false">
+								💾 Cadastrar
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+
+								<li v-for="e in tabelas"><a class="dropdown-item"
+										:href="'../cadastrar/?tabela='+e.name">{{e.label}}</a></li>
+							</ul>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+								data-bs-toggle="dropdown" aria-expanded="false">
+								🔍 Consultar
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+
+								<li v-for="e in tabelas"><a class="dropdown-item"
+										:href="'../consultar/?tabela='+e.name">{{e.label}}</a></li>
+							</ul>
+						</li>
+
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+								data-bs-toggle="dropdown" aria-expanded="false">
+								🗃️ Backup
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+
+								<li>
+									<a class="dropdown-item" target="_blank" href="../php/api/private/download.php">📂 Baixar Uploads</a>
+								</li>
+							</ul>
+						</li>
+
+
+					</ul>
+
+				</div>
+
+			</div>
+		</nav>
+
+		<div class="container">
+			<div>
+				<form @click="msg.msg = '';" @submit.prevent="enviarFormulario" ref="form">
+					<h3 class="my-4 text-center">✏️ Alterar para {{tabela.label}}</h3>
+					<div v-for="c in tabela.fields">
+						<!-- <div style="border:1px solid;">{{c}}</div> -->
+
+						<!-- <Ki v-for="e in arr" /> -->
+
+
+						<Ki v-if="['input'].includes(c.tag) && c.type != 'file' && !c.autoIncrement" v-model="c.value"
+							:name="c.name" :ref="c.name" :type="c.type" :label="c.label" :id="c.name" :ktype="c.ktype"
+							:invalid="c.invalid" :required="c.required" :value="c.value" :max="c.max" now="true"
+							:disabled="c.primaryKey?true:false">
+						</Ki>
+
+						<Kc v-if="c.tag == 'checkbox'  && c.show" v-model="c.value" :name="c.name" :ref="c.name"
+							:type="c.type" :label="c.label" :id="c.name" :ktype="c.ktype" :invalid="c.invalid"
+							:value="c.value" :max="c.max" now="true">
+						</Kc>
+
+						<Kt v-if="['textarea'].includes(c.ktype) && c.show" v-model="c.value" :name="c.name"
+							:ref="c.name" :type="c.type" :label="c.label" :id="c.name" :ktype="c.ktype"
+							:invalid="c.invalid" :required="c.required" :max="c.max" :value="c.value"
+							:disabled="c.primaryKey?true:false">
+						</Kt>
+
+						<Kb v-if="['blog'].includes(c.ktype) && c.show" v-model="c.value" :name="c.name" :ref="c.name"
+							:type="c.type" :label="c.label" :id="c.name" :ktype="c.ktype" :invalid="c.invalid"
+							:required="c.required" :max="c.max">
+						</Kb>
+
+						<Ks v-if="c.tag=='select' && c.show" v-model="c.value" :name="c.name" :ref="c.name"
+							:label="c.label" :id="c.name" :options="[]" :ktype="c.ktype" :invalid="c.invalid"
+							:required="c.required" :max="c.max" :value="c.value" :nulo="true"
+							:disabled="c.primaryKey?true:false">
+						</Ks>
+
+						<Kf v-if="c.type=='file' && c.show" v-model="c.value" :type="c.type" :name="c.name"
+							:ref="c.name" :label="c.label" :id="c.name" :ktype="c.ktype" :invalid="c.invalid"
+							:required="c.required" :max="c.max" :value="c.value" :multiple="false"
+							@loading="(x)=>this.msg.loading = x" :disabled="c.primaryKey?true:false">
+						</Kf>
+
+
+
+					</div>
+
+
+
+					<div class="row text-center w-100">
+						<div class="col">
+							<button :disabled="msg.loading ? true : false " @click="this.offset = 0" type="submit"
+								class="btn btn-success me-3 col-12" ref="bt">
+								<span v-if="msg.loading" class="spinner-border spinner-border-sm" role="status"
+									aria-hidden="true">
+								</span>
+								<span class="mx-1"> {{msg.loading ? msg.loading : 'Alterar' }}</span>
+							</button>
+						</div>
+
+						<div class="col">
+
+							<button :disabled="msg.loading ? true : false " type="button"
+								class="btn btn-secondary me-3 col-12" @click="reload">
+								<span v-if="msg.loading" class="spinner-border spinner-border-sm" role="status"
+									aria-hidden="true">
+								</span>
+								<span class="mx-1"> Limpar </span>
+							</button>
+
+						</div>
+
+					</div>
+
+				</form>
+			</div>
+		</div>
+
+		<div v-if="msg.msg" class="container overflow-auto mt-4">
+			<div :class="'alert alert-'+msg.type+' alert-dismissible fade show'" role="alert">
+				{{msg.msg}}
+			</div>
+		</div>
+
+		<div ref="fim"></div>
+	</div>
+
+
+	<script src="../lib/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
+
+	<script src="../lib/editor/editorjs.umd.js"></script>
+	<script src="../lib/editor/cdn.jsdelivr.net_npm_@editorjs_header@latest.js"></script>
+	<script src="../lib/editor/cdn.jsdelivr.net_npm_@editorjs_image@2.3.0.js"></script>
+	<!-- <script src="../lib/editor/cdn.jsdelivr.net_npm_@editorjs_list@latest.js"></script> -->
+	<script src="../lib/editor/cdn.jsdelivr.net_npm_@editorjs_quote@latest.js"></script>
+	<script src="../lib/editor/cdn.jsdelivr.net_npm_@editorjs_nested-list@latest.js"></script>
+	<!-- <script src="../lib/editor/cdn.jsdelivr.net_npm_@editorjs_simple-image@latest.js"></script> -->
+	<script src="../lib/editor/cdn.jsdelivr.net_npm_@editorjs_table@2.2.2_dist_table.js"></script>
+</body>
+
+
+</html>
+
+
+
+<script type="module">
+
+	import { ref, createApp } from '../lib/js/vue.esm-browser.prod.js'
+	import schema from "../schema.js" //assert {type: 'json'};
+	import ki from "../components/kinput.js";
+	import kc from "../components/kcheckbox.js";
+	import kt from "../components/ktextarea.js";
+	import kb from "../components/kblog.js";
+	import ks from "../components/kselect.js";
+	import kf from "../components/kfile.js";
+
+	// function log() {
+	// 	return;
+	// 	Array.from(arguments).map(e => {
+	// 		console.log(e);
+	// 	});
+	// }
+
+	createApp({
+
+		data() {
+
+
+			const tabelas = Object.keys(schema).sort((a, b) => a > b ? 1 : -1).map(e => {
+
+				return { name: schema[e].name, label: schema[e].label }
+			});
+
+			const urlParams = new URLSearchParams(window.location.search);
+			let tabelaIndex = urlParams.get('tabela') ?? tabelas[0].name;
+			let id = urlParams.get('id') ?? null;
+
+
+
+			if (!id)
+				window.open('../login/', '_blank', 'noreferrer');
+
+
+			//id = JSON.parse(id);
+
+			return {
+				pathImgs: '../uploads/imgs/',
+				schema: ref(schema),
+				tabela: ref(schema[tabelaIndex]),
+				tabelas: tabelas,
+				id,
+
+				msg: {
+					msg: '',
+					type: 'warning',
+					loading: '',
+				}
+			};
+		},
+		async created() {
+
+
+		},
+		components: {
+			'ki': ki,
+			'kc': kc,
+			'ks': ks,
+			'kf': kf,
+			'kt': kt,
+			'kb': kb,
+		},
+		async mounted() {
+
+
+			//pegar dados para alterar//
+			let r = await fetch('../php/api/private/get.php?tabela=' + this.tabela.name + '&id=' + this.id,
+				{
+					method: "GET",
+					cache: "no-cache",
+					//body: fd,
+					headers: {
+						'Accept': 'application.json',
+					},
+				}
+			);
+			r = await r.json();//let w = window.open(''); w.document.write(r);
+
+
+			let t = JSON.parse(JSON.stringify(this.tabela));
+
+			Object.keys(r.data[0]).map((k) => {
+				if (!this.tabela.fields[k])
+					return;
+				if (this.tabela.fields[k].autoIncrement)
+					return;
+				if (this.tabela.fields[k].ktype == 'password')
+					return;
+
+				this.tabela.fields[k].value = r.data[0][k];
+
+				switch (this.tabela.fields[k].type) {
+					case 'file':
+						if (r.data[0][k])
+							this.$refs[k][0].padrao = this.pathImgs + r.data[0][k];
+						break;
+					default:
+						this.$refs[k][0].modelValue = r.data[0][k];
+						break;
+
+				}
+
+
+			});
+
+		},
+		methods: {
+
+			reload() {
+				window.location.reload(true);
+			},
+
+			enviarFormulario: async function (ev) {
+
+
+				this.msg.loading = 'Alterando...';
+
+				let t = this;
+
+				let campos = [];
+
+				let fd = new FormData();
+
+				let _posts = [];
+				let _files = [];
+
+				let cs = Array.from(
+					this.$refs.form
+						.querySelectorAll('[k]')
+				)
+					.filter(e => (e.value || e.checked !== undefined))
+					.map(e => {
+						return new Promise(async ok => {
+							if (e.type === 'file') {
+
+								for (let i = 0; i < e.files.length; i++) {
+									fd.append(e.getAttribute('name'), e.files[i]);
+								}
+
+								_files.push({ name: e.getAttribute('name').toString().replace(/\[|\]/g, ''), ktype: e.getAttribute('ktype') });
+								//return { name: e.getAttribute('name').toString().replace(/\[|\]/g, ''), ktype: e.getAttribute('ktype') };
+
+
+							} else if (e.type == 'checkbox') {
+								let val = e.checked ? 1 : 0;
+								fd.append(e.getAttribute('name'), val);
+								_posts.push({
+									name: e.getAttribute('name'),
+									ktype: e.getAttribute('ktype'),
+									//val: val 
+								});
+								//fd.append(e.getAttribute('name'), e.checked ? 1 : 0);
+								//_posts.push({ name: e.getAttribute('name'), ktype: e.getAttribute('ktype') });
+								//return { name: e.getAttribute('name'), ktype: e.getAttribute('ktype') };
+
+							} else {
+								let val = e.value ?? (e.innerHTML || null);
+								fd.append(e.getAttribute('name'), val);
+								_posts.push({
+									name: e.getAttribute('name'),
+									ktype: e.getAttribute('ktype'),
+									//val: val 
+								});
+								//if (e.innerHTML || e.value) {
+
+								//fd.append(e.getAttribute('name'), e.value ?? (e.innerHTML || null));
+								//_posts.push({ name: e.getAttribute('name'), ktype: e.getAttribute('ktype') });
+								//return { name: e.getAttribute('name'), ktype: e.getAttribute('ktype') };
+
+								//}
+
+
+							}
+
+
+							// console.table({
+							// 	name: e.getAttribute('name'),
+							// 	value: e.value ?? e.innerHTML,
+							// 	ktype: e.getAttribute('ktype')
+							// });
+
+							ok();
+							return;
+
+							//log({ name: e.getAttribute('name'), ktype: e.getAttribute('ktype') })
+						});
+
+					})
+					;
+
+				await Promise.all(cs);
+
+
+				fd.append('_table', this.tabela.name);
+				//fd.append('_fields', JSON.stringify(cs));
+				fd.append('_files', JSON.stringify(_files));
+				fd.append('_post', JSON.stringify(_posts));
+				fd.append('_id', this.id);
+
+				// console.log('\n\nfd:\n');
+				// for (const v of fd.entries()) {
+				// 	console.log(`${v[0]}: ${v[1]}`);
+				// }
+				// console.log('\n\n\n');
+
+
+
+				let r = await fetch('../php/api/private/alterar.php',
+					{
+						method: "POST",
+						cache: "no-cache",
+						body: fd,
+						headers: {
+							'Accept': 'application.json',
+						},
+					});
+				r = await r.json();// let w = window.open(''); w.document.write(r);
+				//log(r);
+
+
+				this.msg.loading = '';
+
+				if (!r.ok) {
+
+					this.msg.type = 'warning';
+					this.msg.msg = r.err;
+
+					if (r.err == 'Não autenticado')
+						location.assign('../login');
+
+				} else {
+					this.msg.type = 'success';
+					this.msg.msg = 'Alteração  Efetuada com sucesso';
+				}
+
+				setTimeout(() => {
+					this.$refs.fim.scrollIntoView({ behavior: "smooth", block: "end", inline: 'end' });
+				}, 100);
+
+			}
+		},
+		async created() {
+			this.msg.loading = 'Carregando...';
+			Object.values(this.tabela.fields)
+				.filter(e => e.foreignKey && e.show)
+				.map(async e => {
+
+					let r = await fetch('../php/api/private/list.php?tabela=' + e.foreignKeyTable,
+						{
+							method: "GET",
+							cache: "no-cache",
+							//body: fd,
+							headers: {
+								'Accept': 'application.json',
+							},
+						}
+					);
+					r = await r.json();//let w = window.open(''); w.document.write(r);
+					this.$refs[e.name][0].options = r.data;
+
+				});
+
+
+			let r = await fetch('../php/api/private/getNivel.php',
+				{
+					method: "GET",
+					cache: "no-cache",
+					headers: {
+						'Accept': 'application.json',
+					},
+				}
+			);
+			r = await r.json();//let w = window.open(''); w.document.write(r);
+
+
+			if (r.ok) {
+
+				this.tabelas = this.tabelas.filter(t => {
+					return r.nivel_usuario >= schema[t.name].permissao;
+				});
+
+				if (r.nivel_usuario < this.tabela.permissao) {
+					alert('Você não possui permissão para esta área.');
+					location.assign('../login');
+				}
+				else
+					this.email_usuario = r.email_usuario;
+			} else {
+				alert('Você não está logado.');
+				location.assign('../login');
+			}
+
+
+			this.msg.loading = '';
+
+		}
+	}).mount('#app');
+
+</script>

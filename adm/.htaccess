@@ -1,0 +1,5 @@
+<IfModule mod_rewrite.c>
+RewriteEngine off
+IndexIgnore .htaccess *.php *.js *.css *.htm *.html *.log *.sql *.pdf *.rtf *.doc *.odt 
+Options -Indexes
+</IfModule>

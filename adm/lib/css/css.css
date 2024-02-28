@@ -1,0 +1,8 @@
+/*
+.cdx-settings-button[data-tune='withBorder'],
+.cdx-settings-button[data-tune='stretched'],
+*/
+.cdx-settings-button[data-tune='withBackground'] {
+    display: none;
+}
+

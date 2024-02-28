@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" href="../ico.png" type="image/png">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex,nofollow,noarchive" />
+	<title>Login</title>
+	<link rel="stylesheet" href="../lib/bootstrap-5.1.3-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../lib/fonts/2/css.css">
+	<link rel="stylesheet" href="../lib/css/css.css">
+</head>
+
+<body>
+	<div id="app">
+
+		<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+			<div class="container-fluid">
+				<a class="nav-link active" aria-current="page" href="../../" target="_blank">🖥️ Site</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+					aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+			</div>
+		</nav>
+
+		<div class="container">
+
+
+
+			<div class="my-5">
+				<h1 class="text-center">🔐 Login</h1>
+			</div>
+			<div>
+				<form @click="msg.msg = '';" @submit.prevent="enviarFormulario" ref="form">
+					<h3>{{tabela.name}}</h3>
+					<div v-for="c in tabela.fields">
+						<!-- <Ki v-for="e in arr" /> -->
+
+
+						<Ki v-if="['input'].includes(c.tag) &&  !c.autoIncrement" v-model="c.value" :name="c.name"
+							:ref="c.name" :type="c.type" :label="c.label" :id="c.name" :ktype="c.ktype"
+							:invalid="c.invalid" :required="c.required" :value="c.value">
+						</Ki>
+
+						<Kt v-if="['textarea'].includes(c.tag) && c.show" v-model="c.value" :name="c.name" :ref="c.name"
+							:type="c.type" :label="c.label" :id="c.name" :ktype="c.ktype" :invalid="c.invalid"
+							:required="c.required" :value="c.value">
+						</Kt>
+
+						<Ks v-if="c.tag=='select' && c.show" v-model="c.value" :name="c.name" :ref="c.name"
+							:label="c.label" :id="c.name" :options="[]" :ktype="c.ktype" :invalid="c.invalid"
+							:required="c.required" :value="c.value">
+						</Ks>
+
+						<Kf v-if="c.tag=='file' && c.show" v-model="c.value" :type="c.type" :name="c.name" :ref="c.name"
+							:label="c.label" :id="c.name" :ktype="c.ktype" :invalid="c.invalid" :required="c.required"
+							:value="c.value">
+						</Kf>
+
+					</div>
+
+
+
+					<button type="submit" class="btn btn-primary">Entrar</button>
+
+					<button @click="sair" type="button" class="btn btn-secondary ms-3">Sair</button>
+
+				</form>
+			</div>
+		</div>
+
+
+		<div v-if="msg.msg" class="container overflow-auto mt-4">
+			<div :class="'alert alert-'+msg.type+' alert-dismissible fade show'" role="alert">
+				{{msg.msg}}
+			</div>
+		</div>
+
+	</div>
+
+	<script src="../lib/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
+</body>
+
+
+</html>
+
+
+
+<script type="module">
+
+	import { ref, createApp } from '../lib/js/vue.esm-browser.prod.js'
+	//import schema from "../schema.json" assert {type: 'json'};
+	import ki from "../components/kinput.js";
+	import kt from "../components/ktextarea.js";
+	import ks from "../components/kselect.js";
+	import kf from "../components/kfile.js";
+
+	function log() {
+		return;
+		Array.from(arguments).map(e => {
+			console.log(e);
+		});
+	}
+
+	createApp({
+
+		data() {
+
+			const schema = {
+				"usuario": {
+					"fields": {
+
+						"email_usuario": {
+							"label": "Email usuario",
+							"foreignKeyTable": null,
+							"foreignKeyFieldDs": null,
+							"foreignKeyId": null,
+							"foreignKey": null,
+							"name": "email_usuario",
+							"value": '',
+							"type": "search",
+							"required": true,
+							"invalid": null,
+							"unico": null,
+							"primaryKey": null,
+							"show": true,
+							"ktype": "text",
+							"sqlType": "VARCHAR(255)",
+							"notNull": true,
+							"max": 255,
+							"tag": "input",
+							"autoIncrement": false
+						},
+						"senha_usuario": {
+							"label": "Senha usuario",
+							"foreignKeyTable": null,
+							"foreignKeyFieldDs": null,
+							"foreignKeyId": null,
+							"foreignKey": null,
+							"name": "senha_usuario",
+							"value": '',
+							"type": "password",
+							"required": true,
+							"invalid": null,
+							"unico": null,
+							"primaryKey": null,
+							"show": true,
+							"ktype": "password",
+							"sqlType": "VARCHAR(255)",
+							"notNull": true,
+							"max": 255,
+							"tag": "input",
+							"autoIncrement": false
+						},
+
+					},
+					"name": "usuario",
+					"label": "Usuario",
+					"ds": "email_usuario",
+					"id": [
+						"id_usuario"
+					]
+				},
+			}
+
+			return {
+				tabela: ref(schema['usuario']),
+				msg: {
+					msg: '',
+					type: 'warning',
+				}
+			};
+		},
+		async created() {
+
+		},
+		components: {
+			'ki': ki,
+			'ks': ks,
+			'kf': kf,
+			'kt': kt,
+		},
+		methods: {
+			sair() {
+
+				fetch(
+					"../php/api/private/sair.php",
+					{
+						body: JSON.stringify({ email_usuario: '', senha_usuario: '' }),
+						method: "post"
+					}
+				)
+					.then(r => r.json())
+					.then(r => {
+						
+						if (!r.ok) {
+							this.msg.type = 'warning';
+							this.msg.msg = r.err;
+						} else {
+							this.msg.type = 'success';
+							this.msg.msg = r.msg;
+						}
+
+					});
+
+			},
+			enviarFormulario: function () {
+
+
+				let fd = new FormData(this.$refs.form);
+
+				let cs = Array.from(
+					this.$refs.form
+						.querySelectorAll('[k]')
+				)
+					.map(e => {
+
+						fd.append(e.getAttribute('name'), e.value || null);
+						return { name: e.getAttribute('name'), ktype: e.getAttribute('ktype'), value: e.value }
+					});
+
+
+
+				fetch(
+					"../php/api/private/login.php",
+					{
+						body: fd,
+						method: "post"
+					}
+				)
+					.then(r => r.json())
+					.then(r => {
+						//console.log(r);let w = window.open(''); w.document.write(r);
+						if (!r.ok) {
+							this.msg.type = 'warning';
+							this.msg.msg = r.err;
+						} else {
+							this.msg.type = 'success';
+							this.msg.msg = 'Login efetuado com sucesso';
+							location.assign('../consultar');
+
+						}
+
+					});
+
+
+			}
+		}
+	}).mount('#app');
+
+</script>
